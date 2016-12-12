@@ -87,12 +87,12 @@ function update() {
   s += dataString("Time for last click", timeForLastClick, true);
   s += dataString("Time per click", timePerClick.toFixed(2), true);
   s += dataString("Accuracy", accuracy.toFixed(2), true);
+  s += dataString("Dimensions (px)", window.innerWidth+"x"+window.innerHeight);
   hud.innerHTML = s;
 }
 
 function dataString(title, data, zeroToNA) {
   if (zeroToNA && data==0) data = "n/a";
-
   return "<p>" + title + ": " + data + "</p>";
 }
 
