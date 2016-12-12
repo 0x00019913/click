@@ -6,13 +6,13 @@ var radius = 35;
 var stroke = 2;
 var xrange, yrange;
 var x, y;
-var interval;
 var timeDelta = 10;
-var time = 0;
 var clicks = 0;
 var missedClicks = 0;
 var lastClickTime = 0;
 var running = false;
+
+var timer;
 
 init();
 
@@ -27,6 +27,7 @@ function onHudClick() {
   }
   else {
     running = true;
+    timer = new Timer(timeDelta);
     setRanges();
 
     context.beginPath();
@@ -40,7 +41,7 @@ function onHudClick() {
     window.addEventListener('resize', onWindowResize, false);
     container.addEventListener('click', onTargetClick, false);
 
-    startTimer();
+    timer.start();
     update();
     putTarget();
   }
@@ -62,27 +63,19 @@ function setRanges() {
   container.height = dim;
 }
 
-function startTimer() {
-  if (!interval) interval = window.setInterval(incrementTimer, timeDelta);
-}
-
-function incrementTimer() {
-  time += timeDelta;
-}
-
 function update() {
   var timePerClick = 0;
   var accuracy = 0;
   if (clicks>0) {
-    timePerClick = time/clicks;
+    timePerClick = timer.getTime()/clicks;
     accuracy = (clicks-missedClicks)/clicks;
   }
 
-  var timeForLastClick = time-lastClickTime;
-  lastClickTime = time;
+  var timeForLastClick = timer.getTime()-lastClickTime;
+  lastClickTime = timer.getTime();
 
   var s = "";
-  s += dataString("Time (ms)", time);
+  s += dataString("Time (ms)", timer.getTime());
   s += dataString("Clicks", clicks);
   s += dataString("Time for last click", timeForLastClick, true);
   s += dataString("Time per click", timePerClick.toFixed(2), true);
@@ -101,6 +94,7 @@ function onWindowResize() {
 }
 
 function onTargetClick(e) {
+  clicks += 1;
   /* total radius of circle */
   var dim = radius+stroke;
   /* find coordinates of mouse relative to element's center */
@@ -114,7 +108,6 @@ function onTargetClick(e) {
   else {
     missedClicks += 1;
   }
-  clicks += 1;
 }
 
 function randomPoint(min, max) {
