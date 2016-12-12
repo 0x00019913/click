@@ -83,6 +83,7 @@ function update() {
 
   var s = "";
   s += dataString("Time (ms)", time);
+  s += dataString("Clicks", clicks);
   s += dataString("Time for last click", timeForLastClick, true);
   s += dataString("Time per click", timePerClick.toFixed(2), true);
   s += dataString("Accuracy", accuracy.toFixed(2), true);
@@ -90,7 +91,7 @@ function update() {
 }
 
 function dataString(title, data, zeroToNA) {
-  if (zeroToNA && (!data)) data = "n/a";
+  if (zeroToNA && data==0) data = "n/a";
 
   return "<p>" + title + ": " + data + "</p>";
 }
