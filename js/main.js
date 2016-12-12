@@ -42,7 +42,7 @@ function onHudClick() {
     container.addEventListener('click', onTargetClick, false);
 
     timer.start();
-    update();
+    updateHud();
     putTarget();
   }
 }
@@ -63,7 +63,7 @@ function setRanges() {
   container.height = dim;
 }
 
-function update() {
+function updateHud() {
   var timePerClick = 0;
   var accuracy = 0;
   if (clicks>0) {
@@ -102,7 +102,7 @@ function onTargetClick(e) {
   var dCenterY = (e.clientY-y)-dim;
   /* if within circle */
   if (Math.sqrt(dCenterX*dCenterX + dCenterY*dCenterY) <= dim) {
-    update();
+    updateHud();
     putTarget();
   }
   else {
